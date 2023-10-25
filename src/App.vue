@@ -1,5 +1,5 @@
 <template>
-
+  <h1>Hello World</h1>
 </template>
 
 <script setup lang="ts">
@@ -8,6 +8,6 @@
 
 
 <style lang="scss">
-@import "./assets/base.css";
+@import "assets/base.scss";
 
 </style>
