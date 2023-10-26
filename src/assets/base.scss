@@ -7,6 +7,7 @@
   --success-2: #2ed573;
   --gray-1: #f6f6f6;
   --gray-2: #ddd;
+  --gray-3: #34495e;
   --text-color: #444;
   --text-primary-color: #ffffff;
 
@@ -75,6 +76,10 @@ body {
     flex: 1 1 auto;
 }
 
+.text-center {
+  text-align: center;
+}
+
 // padding
 
 .p-10 {
@@ -89,6 +94,11 @@ body {
     padding: 30px;
 }
 
+.px-20 {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 // margin
 
 .m-10 {
@@ -101,4 +111,51 @@ body {
 
 .m-30 {
     margin: 30px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+// buttons
+
+.btn {
+  padding: 8px 15px;
+  border: 0;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color .2s;
+}
+
+.btn-primary {
+  background-color: var(--primary-1);
+  color: var(--text-primary-color);
+  &:hover {
+    background-color: var(--primary-2);
+  }
+}
+
+.btn-danger {
+  background-color: var(--danger-1);
+  color: var(--text-primary-color);
+  &:hover {
+    background-color: var(--danger-2);
+  }
+}
+
+.btn-success {
+  background-color: var(--success-1);
+  color: var(--text-primary-color);
+  &:hover {
+    background-color: var(--success-2);
+  }
 }
