@@ -1,3 +1,5 @@
+import type {ProductInterface} from "@/interfaces";
+
 export default [
     {
         id: 1,
@@ -6,7 +8,7 @@ export default [
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
         stock: 5,
-        quantity: null,
+        category : 'gamer'
     },
     {
         id: 2,
@@ -15,7 +17,7 @@ export default [
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
         stock: 5,
-        quantity: null,
+        category : 'gamer'
     },
     {
         id: 3,
@@ -24,7 +26,7 @@ export default [
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
         stock: 5,
-        quantity: null,
+        category : 'desktop'
     },
     {
         id: 4,
@@ -33,7 +35,7 @@ export default [
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
         stock: 5,
-        quantity: null,
+        category : 'gamer'
     },
     {
         id: 5,
@@ -42,7 +44,7 @@ export default [
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
         stock: 5,
-        quantity: null,
+        category : 'desktop'
     },
     {
         id: 6,
@@ -51,7 +53,7 @@ export default [
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
         stock: 5,
-        quantity: null,
+        category : 'streaming'
     },
     {
         id: 7,
@@ -60,7 +62,7 @@ export default [
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
         stock: 5,
-        quantity: null,
+        category : 'streaming'
     },
     {
         id: 8,
@@ -69,6 +71,6 @@ export default [
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
         stock: 5,
-        quantity: null,
+        category : 'gamer'
     },
-]
+] as ProductInterface[];

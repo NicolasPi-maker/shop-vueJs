@@ -3,16 +3,19 @@ import TheHeader from "@/components/Header.vue";
 import TheFooter from "@/components/Footer.vue";
 import Shop from "@/components/Shop/Shop.vue";
 import Cart from "@/components/Cart/Cart.vue";
-import {computed, reactive, ref} from "vue";
-import type {ProductInterface, ProductCartInterface} from "@/interfaces";
-import data from './data/product';
+import {computed, reactive} from "vue";
+import type {ProductInterface, ProductCartInterface, FiltersInterface, FilterUpdate} from "@/interfaces";
+import dataProduct from './data/product';
+import { DEFAULT_FILTERS } from "./data/filter";
 
 const state = reactive<{
   products: ProductInterface[],
   cart: ProductCartInterface[],
+  filters: FiltersInterface,
 }>({
-  products: data,
+  products: dataProduct,
   cart: [],
+  filters: {...DEFAULT_FILTERS},
 });
 
 const getProductById = (productId: number) => {
@@ -62,7 +65,36 @@ const removeProductFromCart = (productId: number) => {
   }
 }
 
-const {products, cart} = state;
+const {products, cart, filters} = state;
+
+const filteredProducts = computed(() => {
+  return products.filter((product) => {
+    if(
+        product.title.toLowerCase().startsWith(filters.search.toLowerCase())
+        && product.price >= filters.priceRange.min
+        && product.price <= filters.priceRange.max
+        && (filters.category === 'all' || product.category === filters.category)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+});
+
+const updateFilter = (filterUpdate: FilterUpdate) => {
+  if(filterUpdate.search !== undefined) {
+    console.log(filterUpdate.search);
+    filters.search = filterUpdate.search;
+  } else if(filterUpdate.priceRange) {
+    filters.priceRange = filterUpdate.priceRange;
+  } else if(filterUpdate.category) {
+    filters.category = filterUpdate.category;
+  } else {
+    state.filters = {...DEFAULT_FILTERS};
+  }
+}
+
 const cartEmpty = computed(() => !cart.length);
 
 </script>
@@ -70,7 +102,13 @@ const cartEmpty = computed(() => !cart.length);
 <template>
   <div class="app-container"  :class="{gridEmpty: cartEmpty}">
     <TheHeader class="header"/>
-    <Shop :products="products" class="shop" @add-to-cart="addProductToCart"/>
+    <Shop
+        @update-filters="updateFilter"
+        :products="filteredProducts"
+        class="shop"
+        @add-to-cart="addProductToCart"
+        :filters="filters"
+    />
     <Cart v-if="!cartEmpty" :cart="cart" class="cart" @remove-product="removeProductFromCart"/>
     <TheFooter class="footer"/>
   </div>
