@@ -68,7 +68,7 @@ export default [
         id: 8,
         title : "MacBookPro",
         image : "src/assets/uploads/macbook.png",
-        price : 1500,
+        price : 3500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
         stock: 5,
         category : 'gamer'
