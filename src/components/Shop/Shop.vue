@@ -21,6 +21,7 @@ const emit = defineEmits<{
         @update-filters="emit('updateFilters', $event)"
         class="shop-filter"
         :filters="filters"
+        :products="products"
     />
     <ShopProductList
         class="flex-fill"

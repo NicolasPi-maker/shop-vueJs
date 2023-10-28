@@ -65,7 +65,21 @@ const removeProductFromCart = (productId: number) => {
   }
 }
 
-const {products, cart, filters} = state;
+let {products, cart, filters} = state;
+
+const updateFilter = (filterUpdate: FilterUpdate) => {
+  if(filterUpdate.search !== undefined) {
+    filters.search = filterUpdate.search;
+  } else if(filterUpdate.priceRange) {
+    filters.priceRange = filterUpdate.priceRange;
+  } else if(filterUpdate.category) {
+    filters.category = filterUpdate.category;
+  } else {
+    filters.search = DEFAULT_FILTERS.search;
+    filters.priceRange = DEFAULT_FILTERS.priceRange;
+    filters.category = DEFAULT_FILTERS.category;
+  }
+}
 
 const filteredProducts = computed(() => {
   return products.filter((product) => {
@@ -81,19 +95,6 @@ const filteredProducts = computed(() => {
     }
   });
 });
-
-const updateFilter = (filterUpdate: FilterUpdate) => {
-  if(filterUpdate.search !== undefined) {
-    console.log(filterUpdate.search);
-    filters.search = filterUpdate.search;
-  } else if(filterUpdate.priceRange) {
-    filters.priceRange = filterUpdate.priceRange;
-  } else if(filterUpdate.category) {
-    filters.category = filterUpdate.category;
-  } else {
-    state.filters = {...DEFAULT_FILTERS};
-  }
-}
 
 const cartEmpty = computed(() => !cart.length);
 

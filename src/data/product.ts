@@ -12,7 +12,7 @@ export default [
     },
     {
         id: 2,
-        title : "MacBookPro",
+        title : "Asus ROG",
         image : "src/assets/uploads/macbook.png",
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
@@ -21,7 +21,7 @@ export default [
     },
     {
         id: 3,
-        title : "MacBookPro",
+        title : "MSI",
         image : "src/assets/uploads/macbook.png",
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
@@ -30,7 +30,7 @@ export default [
     },
     {
         id: 4,
-        title : "MacBookPro",
+        title : "Alien Ware",
         image : "src/assets/uploads/macbook.png",
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
@@ -39,7 +39,7 @@ export default [
     },
     {
         id: 5,
-        title : "MacBookPro",
+        title : "Lenovo",
         image : "src/assets/uploads/macbook.png",
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
@@ -48,7 +48,7 @@ export default [
     },
     {
         id: 6,
-        title : "MacBookPro",
+        title : "HP Omen",
         image : "src/assets/uploads/macbook.png",
         price : 1500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
@@ -68,7 +68,7 @@ export default [
         id: 8,
         title : "MacBookPro",
         image : "src/assets/uploads/macbook.png",
-        price : 1500,
+        price : 3500,
         description : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac",
         stock: 5,
         category : 'gamer'
