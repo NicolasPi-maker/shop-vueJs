@@ -7,6 +7,7 @@
   --success-2: #2ed573;
   --gray-1: #f6f6f6;
   --gray-2: #ddd;
+  --gray-3: #34495e;
   --text-color: #444;
   --text-primary-color: #ffffff;
   --border: 1px solid var(--gray-2);
@@ -45,6 +46,12 @@ body {
   font-family: var(--font-family);
 }
 
+input {
+  border: var(--border);
+  border-radius: var(--border-radius);
+  padding: 8px 15px;
+}
+
 .d-flex {
   display: flex;
 }
@@ -69,6 +76,10 @@ body {
   flex: 1 1 auto;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .p-10 {
   padding: 10px;
 }
@@ -81,6 +92,11 @@ body {
   padding: 30px;
 }
 
+.px-20 {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .m-10 {
   margin: 10px;
 }
@@ -91,6 +107,55 @@ body {
 
 .m-30 {
   margin: 30px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.btn {
+  padding: 8px 15px;
+  border: 0;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-primary {
+  background-color: var(--primary-1);
+  color: var(--text-primary-color);
+}
+.btn-primary:hover {
+  background-color: var(--primary-2);
+}
+
+.btn-danger {
+  background-color: var(--danger-1);
+  color: var(--text-primary-color);
+}
+.btn-danger:hover {
+  background-color: var(--danger-2);
+}
+
+.btn-success {
+  background-color: var(--success-1);
+  color: var(--text-primary-color);
+}
+.btn-success:hover {
+  background-color: var(--success-2);
 }
 
 /*# sourceMappingURL=base.css.map */
