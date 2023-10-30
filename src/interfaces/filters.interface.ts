@@ -1,4 +1,4 @@
-export type Category = 'gamer' | 'desktop' | 'streaming' | 'all';
+import type {Category} from "./type";
 export interface FiltersInterface {
     search : string,
     priceRange : { min : number, max : number },

@@ -5,11 +5,11 @@
       <span class="logo">Dyma</span>
     </a>
     <ul class="d-flex flex-row flex-fill">
-      <li class="mr-10">
-        <a href="">boutique</a>
+      <li class="mr-10" :class="{ active : page === 'AppShop'}">
+        <a @click="emit('navigate', 'AppShop')">Boutique</a>
       </li>
-      <li>
-        <a href="">Admin</a>
+      <li :class="{ active : page === 'Admin'}">
+        <a @click="emit('navigate', 'Admin')">Admin</a>
       </li>
     </ul>
     <ul class="d-flex flex-row">
@@ -24,7 +24,15 @@
 </template>
 
 <script setup lang="ts">
+  import type {Page} from "@/interfaces";
 
+  const props = defineProps<{
+    page : Page
+  }>()
+
+  const emit = defineEmits<{
+    (event: 'navigate', page: Page): void,
+  }>();
 </script>
 
 
@@ -33,6 +41,7 @@
     background-color: var(--primary-1);
     a {
       color: var(--text-primary-color);
+      cursor: pointer;
       img {
         width: 20px;
         margin-right: 5px;
@@ -41,6 +50,13 @@
         font-weight: 700;
         font-size: 20px;
       }
+    }
+  }
+
+  .active {
+    a {
+      color: white;
+      font-weight: bold;
     }
   }
 </style>

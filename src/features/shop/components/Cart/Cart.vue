@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CartProductList from "@/components/Cart/CartProductList.vue";
+import CartProductList from "@/features/shop/components/Cart/CartProductList.vue";
 import type {ProductCartInterface} from "@/interfaces";
 import {computed} from "vue";
 
@@ -8,7 +8,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (event: 'removeProduct', productId: number): void,
+  (event: 'removeProduct', productId: string): void,
 }>();
 
 const getTotalPrice = computed(() => props.cart.reduce((acc, product) => {

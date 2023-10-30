@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ShopProductList from "@/components/Shop/ShopProductList.vue";
+import ShopProductList from "@/features/shop/components/Shop/ShopProductList.vue";
 import type {ProductInterface} from "@/interfaces/product.interface";
-import ShopFilter from "@/components/Shop/ShopFilter.vue";
+import ShopFilter from "@/features/shop/components/Shop/ShopFilter.vue";
 import type {FiltersInterface, FilterUpdate} from "@/interfaces";
 
 const props = defineProps<{
@@ -10,7 +10,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (event: 'addToCart', productId: number): void,
+  (event: 'addToCart', productId: string): void,
   (event: 'updateFilters', filterUpdate: FilterUpdate): void,
 }>();
 </script>
@@ -24,7 +24,7 @@ const emit = defineEmits<{
         :products="products"
     />
     <ShopProductList
-        class="flex-fill"
+        class="flex-fill scrollable"
         :products="products"
         @add-to-cart="emit('addToCart', $event)"
     />
@@ -34,5 +34,11 @@ const emit = defineEmits<{
 <style lang="scss" scoped>
 .shop-filter {
   flex: 0 0 200px;
+  height: calc(100vh - 96px);
+}
+
+.scrollable {
+  overflow: auto;
+  height: calc(100vh - 96px);
 }
 </style>
