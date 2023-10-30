@@ -13,6 +13,7 @@ const emit = defineEmits<{
   (event: 'addToCart', productId: string): void,
   (event: 'updateFilters', filterUpdate: FilterUpdate): void,
 }>();
+
 </script>
 
 <template>

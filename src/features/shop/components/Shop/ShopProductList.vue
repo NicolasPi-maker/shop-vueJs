@@ -9,6 +9,7 @@ const props = defineProps<{
 const emit = defineEmits<{
   (event: 'addToCart', productId: string): void,
 }>();
+
 </script>
 
 <template>

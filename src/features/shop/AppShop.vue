@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import Shop from "@/features/shop/components/Shop/Shop.vue";
 import Cart from "@/features/shop/components/Cart/Cart.vue";
-import {computed, reactive} from "vue";
+import {computed, reactive, watchEffect} from "vue";
 import type {ProductInterface, ProductCartInterface, FiltersInterface, FilterUpdate} from "@/interfaces";
 import { DEFAULT_FILTERS } from "./data/filter";
+import {fetchProduct} from "@/shared/services/product.service";
 
 const state = reactive<{
   products: ProductInterface[],
@@ -15,13 +16,14 @@ const state = reactive<{
   filters: {...DEFAULT_FILTERS},
 });
 
-const fetchProducts = await (await fetch('https://restapi.fr/api/products')).json();
-if(Array.isArray(fetchProducts)) {
-  state.products = fetchProducts;
-} else {
-  state.products = [fetchProducts];
-}
-
+watchEffect(async () => {
+  const fetchedProducts = await fetchProduct(state.filters);
+  if(Array.isArray(fetchedProducts)) {
+    state.products = fetchedProducts;
+  } else {
+    state.products = [fetchedProducts];
+  }
+})
 const getProductById = (productId: string) => {
   return state.products.find((product) => product._id === productId);
 }
@@ -108,7 +110,7 @@ const cartEmpty = computed(() => !cart.length);
   <div class="shop-container" :class="{ 'grid-empty' : cartEmpty }">
     <Shop
         @update-filters="updateFilter"
-        :products="filteredProducts"
+        :products="state.products"
         class="shop"
         @add-to-cart="addProductToCart"
         :filters="filters"
