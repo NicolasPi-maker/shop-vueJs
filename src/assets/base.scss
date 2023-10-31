@@ -1,3 +1,5 @@
+@use './mixin.scss' as *;
+
 :root {
   --primary-1: #70a1ff;
   --primary-2: #1e90ff;
@@ -156,6 +158,14 @@ textarea {
   margin-right: 20px;
 }
 
+.ml-20 {
+    margin-left: 20px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
 // buttons
 
 .btn {
@@ -198,4 +208,24 @@ textarea {
   border-radius: var(--border-radius);
   background-color: white;
   padding : 30px;
+}
+
+// util
+
+.hide-xs {
+    @include xs {
+        display: none;
+    }
+}
+
+.hide-sm {
+  @include sm {
+    display: none;
+  }
+}
+
+.show-xs {
+  @include xs {
+    display: flex;
+  }
 }

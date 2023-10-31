@@ -1,30 +1,55 @@
 <template>
+
   <header class="px-20 d-flex flex-row align-items-center">
     <a href="" class="d-flex align-items-center mr-20">
       <img src="../assets/logo.svg" alt="">
       <span class="logo">Dyma</span>
     </a>
-    <ul class="d-flex flex-row flex-fill">
-      <li class="mr-10" :class="{ active : page === 'AppShop'}">
-        <a @click="emit('navigate', 'AppShop')">Boutique</a>
-      </li>
-      <li :class="{ active : page === 'Admin'}">
-        <a @click="emit('navigate', 'Admin')">Admin</a>
-      </li>
-    </ul>
-    <ul class="d-flex flex-row">
-      <li class="mr-10">
-        <a href="">Inscription</a>
-      </li>
-      <li>
-        <a href="">Connexion</a>
-      </li>
-    </ul>
+    <div class="d-flex flex-fill flex-row align-items-center actions-container">
+      <ul class="d-flex flex-row flex-fill hide-xs">
+        <li class="mr-10" :class="{ active : page === 'AppShop'}">
+          <a @click="emit('navigate', 'AppShop')">Boutique</a>
+        </li>
+        <li :class="{ active : page === 'Admin'}">
+          <a @click="emit('navigate', 'Admin')">Admin</a>
+        </li>
+      </ul>
+      <ul class="d-flex flex-row hide-xs">
+        <li class="mr-10">
+          <a href="">Inscription</a>
+        </li>
+        <li>
+          <a href="">Connexion</a>
+        </li>
+      </ul>
+      <div class="menu-xs-container">
+        <Calc :open="state.open" @close="state.open = false" :transparent="true" />
+        <i @click="state.open = !state.open" class="fa-solid fa-bars show-xs hide-sm" style="color: white"></i>
+        <Transition>
+          <ul @click="state.open = false" class="menu card" v-if="state.open">
+            <li class="mr-10" :class="{ active : page === 'AppShop'}">
+              <a @click="emit('navigate', 'AppShop')">Boutique</a>
+            </li>
+            <li :class="{ active : page === 'Admin'}">
+              <a @click="emit('navigate', 'Admin')">Admin</a>
+            </li>
+            <li class="mr-10">
+              <a href="">Inscription</a>
+            </li>
+            <li>
+              <a href="">Connexion</a>
+            </li>
+          </ul>
+        </Transition>
+      </div>
+    </div>
   </header>
 </template>
 
 <script setup lang="ts">
   import type {Page} from "@/interfaces";
+  import {reactive} from "vue";
+  import Calc from "@/components/Calc.vue";
 
   const props = defineProps<{
     page : Page
@@ -33,10 +58,17 @@
   const emit = defineEmits<{
     (event: 'navigate', page: Page): void,
   }>();
+
+  const state = reactive<{
+    open : boolean,
+  }>({
+    open : false,
+  })
 </script>
 
-
 <style lang="scss" scoped>
+@use "@/assets/mixin" as *;
+@import "@/assets/base.scss";
   header {
     background-color: var(--primary-1);
     a {
@@ -52,11 +84,45 @@
       }
     }
   }
-
   .active {
     a {
       color: white;
       font-weight: bold;
     }
   }
+  .actions-container {
+    @include xs {
+      justify-content: end;
+    }
+  }
+
+  .menu-xs-container {
+    position: relative;
+    z-index: 2;
+  }
+
+  .menu {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    z-index: 2;
+    li {
+      padding: 10px 20px;
+    }
+    a {
+      color: var(--text-color);
+    }
+  }
+
+  .v-leave-to,
+  .v-enter-from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+
+  .v-leave-active,
+  .v-enter-active {
+    transition: all 0.4s;
+  }
+
 </style>

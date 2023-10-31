@@ -1,29 +1,49 @@
 <script setup lang="ts">
 import Shop from "@/features/shop/components/Shop/Shop.vue";
 import Cart from "@/features/shop/components/Cart/Cart.vue";
-import {computed, reactive, watchEffect} from "vue";
+import {computed, provide, reactive, toRef, watch, watchEffect} from "vue";
 import type {ProductInterface, ProductCartInterface, FiltersInterface, FilterUpdate} from "@/interfaces";
 import { DEFAULT_FILTERS } from "./data/filter";
 import {fetchProduct} from "@/shared/services/product.service";
+import {pageKey} from "@/shared/providerKey/pageKey";
 
 const state = reactive<{
   products: ProductInterface[],
   cart: ProductCartInterface[],
   filters: FiltersInterface,
+  page: number,
+  isLoading: boolean,
+  moreResults: boolean,
 }>({
   products: [],
   cart: [],
   filters: {...DEFAULT_FILTERS},
+  page: 1,
+  isLoading: true,
+  moreResults: true,
 });
 
 watchEffect(async () => {
-  const fetchedProducts = await fetchProduct(state.filters);
+  state.isLoading = true;
+  const fetchedProducts = await fetchProduct(state.filters, state.page);
   if(Array.isArray(fetchedProducts)) {
-    state.products = fetchedProducts;
+    state.products = [...state.products, ...fetchedProducts];
+    if (fetchedProducts.length < 20) {
+      state.moreResults = false;
+    }
   } else {
-    state.products = [fetchedProducts];
+    state.products = [...state.products, fetchedProducts];
   }
+  state.isLoading = false;
 })
+
+watch(() => state.filters.category && state.filters.priceRange, () => {
+  state.page = 1;
+  state.products = [];
+})
+
+provide(pageKey, toRef(state, 'page'));
+
 const getProductById = (productId: string) => {
   return state.products.find((product) => product._id === productId);
 }
@@ -88,12 +108,9 @@ const updateFilter = (filterUpdate: FilterUpdate) => {
 }
 
 const filteredProducts = computed(() => {
-  return products.filter((product) => {
+  return state.products.filter((product) => {
     if(
         product.title.toLowerCase().startsWith(filters.search.toLowerCase())
-        && product.price >= filters.priceRange.min
-        && product.price <= filters.priceRange.max
-        && (filters.category === 'all' || product.category === filters.category)
     ) {
       return true;
     } else {
@@ -107,30 +124,18 @@ const cartEmpty = computed(() => !cart.length);
 </script>
 
 <template>
-  <div class="shop-container" :class="{ 'grid-empty' : cartEmpty }">
+  <div class="d-flex flex-column">
     <Shop
+        @inc-page="state.page++"
         @update-filters="updateFilter"
-        :products="state.products"
-        class="shop"
+        :products="filteredProducts"
+        :isMoreResults="state.moreResults"
         @add-to-cart="addProductToCart"
         :filters="filters"
     />
-    <Cart v-if="!cartEmpty" :cart="cart" class="cart" @remove-product="removeProductFromCart"/>
+    <Cart v-if="!cartEmpty" :cart="cart" @remove-product="removeProductFromCart"/>
   </div>
 </template>
 
 <style scoped>
-.shop-container {
-  display: grid;
-  grid-template-columns: 75% 25%;
-}
-
-.cart {
-  background-color: white;
-  border-left: var(--border);
-}
-
-.grid-empty {
-  grid-template-columns: 100%;
-}
 </style>
