@@ -37,7 +37,7 @@ watchEffect(async () => {
   state.isLoading = false;
 })
 
-watch(() => state.filters.category || state.filters.priceRange, () => {
+watch(() => state.filters.category && state.filters.priceRange, () => {
   state.page = 1;
   state.products = [];
 })

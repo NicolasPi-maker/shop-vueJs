@@ -41,6 +41,13 @@ img {
 a {
   color: var(--text-color);
   text-decoration: none;
+  padding: 8px 15px;
+  transition: .3s;
+  border-radius: var(--border-radius);
+  &:hover {
+    background-color: var(--primary-1);
+    color: var(--text-primary-color);
+  }
 }
 
 body {
@@ -208,6 +215,12 @@ textarea {
   border-radius: var(--border-radius);
   background-color: white;
   padding : 30px;
+}
+
+a.router-link-active {
+  color: white;
+  background-color: var(--primary-1);
+  font-weight: bold;
 }
 
 // util

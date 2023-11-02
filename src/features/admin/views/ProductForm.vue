@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <h3 class="mb-20">Ajouter un article</h3>
+    <h3 class="mb-20">{{ formTitle }}</h3>
     <form method="post" @submit="trySubmit">
       <div class="d-flex flex-column mb-20">
         <label ref="titleInput" for="title" class="mb-5">Titre*</label>
@@ -47,9 +47,37 @@
   import {toTypedSchema} from "@vee-validate/zod";
   import {z} from "zod";
   import {useField, useForm} from "vee-validate";
-  import {onMounted, ref} from "vue";
+  import {onMounted, reactive, ref} from "vue";
   import type {FieldContext} from "vee-validate"
+  import {useRoute, useRouter} from "vue-router";
+  import {addProduct, getProductById, updateProduct} from "@/shared/services/product.service";
+  import type {ProductFormInterface} from "@/interfaces";
 
+  const formTitle = ref('Ajouter un article');
+  const route = useRoute();
+  const router = useRouter();
+
+  const state = reactive<{
+    product: null | ProductFormInterface,
+  }>({
+    product: null,
+  })
+
+  if(route.params.id) {
+    state.product = await getProductById(route.params.id);
+    if(state.product) {
+      formTitle.value = 'Modifier un article';
+    }
+  }
+
+  const initialValues = {
+    title: state.product ? state.product.title : '',
+    image: state.product ? state.product.image: '',
+    price: state.product ? state.product.price : 0,
+    description: state.product ? state.product.description : '',
+    stock: state.product ? state.product.stock : 0,
+    category: state.product ? state.product.category : '',
+  }
   const setStyleValidation = (field: FieldContext) => {
     if (field.meta.valid && field.meta.validated) {
       return 'success';
@@ -87,6 +115,7 @@
 
   const { handleSubmit, isSubmitting } = useForm({
     validationSchema,
+    initialValues,
   });
 
   const title = useField('title');
@@ -99,15 +128,13 @@
 
   const trySubmit = handleSubmit(async(formValues, { resetForm }) => {
     try {
-      await fetch('https://restapi.fr/api/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formValues)
-      });
-      resetForm();
-      titleInput.value?.focus();
+      if(state.product) {
+        await updateProduct(route.params.id, formValues as ProductFormInterface);
+
+      } else {
+        await addProduct(formValues as ProductFormInterface);
+      }
+      await router.push('/admin/productlist');
     } catch (error) {
       console.log(error);
     }
@@ -115,7 +142,7 @@
 </script>
 
 <style scoped>
-@import "src/assets/base.css";
+@import "../../../assets/base.css";
   .card {
     width: 100%;
     max-width: 500px;

@@ -75,10 +75,6 @@
       }
     }
   }
-  a.router-link-active {
-    color: white;
-    font-weight: bold;
-  }
 
   .actions-container {
     @include xs {
