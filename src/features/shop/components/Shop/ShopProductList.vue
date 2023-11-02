@@ -34,7 +34,7 @@ watch(page, () => {
       </template>
     </div>
     <div class="d-flex flex-row align-items-center justify-content-center">
-      <button v-if="isMoreResults" @click="emit('incPage')" class="btn btn-primary">Charger plus de produit</button>
+      <button v-if="isMoreResults && products.length" @click="emit('incPage')" class="btn btn-primary">Charger plus de produit</button>
     </div>
   </div>
 </template>

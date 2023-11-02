@@ -46,10 +46,28 @@ body {
   font-family: var(--font-family);
 }
 
-input {
+label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-3);
+}
+
+input, textarea, select {
   border: var(--border);
   border-radius: var(--border-radius);
   padding: 8px 15px;
+}
+
+textarea {
+  resize: none;
+  font-family: var(--font-family);
+}
+
+.form-error {
+  color: var(--danger-1);
+  font-size: 14px;
+  margin-top: 5px;
+  font-weight: bold;
 }
 
 .d-flex {
@@ -129,6 +147,14 @@ input {
   margin-right: 20px;
 }
 
+.ml-20 {
+  margin-left: 20px;
+}
+
+.mt-20 {
+  margin-top: 20px;
+}
+
 .btn {
   padding: 8px 15px;
   border: 0;
@@ -160,6 +186,31 @@ input {
 }
 .btn-success:hover {
   background-color: var(--success-2);
+}
+
+.card {
+  border: var(--border);
+  border-radius: var(--border-radius);
+  background-color: white;
+  padding: 30px;
+}
+
+@media (max-width: 575px) {
+  .hide-xs {
+    display: none;
+  }
+}
+
+@media (min-width: 576px) {
+  .hide-sm {
+    display: none;
+  }
+}
+
+@media (max-width: 575px) {
+  .show-xs {
+    display: flex;
+  }
 }
 
 /*# sourceMappingURL=base.css.map */

@@ -7,11 +7,11 @@
     </a>
     <div class="d-flex flex-fill flex-row align-items-center actions-container">
       <ul class="d-flex flex-row flex-fill hide-xs">
-        <li class="mr-10" :class="{ active : page === 'AppShop'}">
-          <a @click="emit('navigate', 'AppShop')">Boutique</a>
+        <li class="mr-10">
+          <router-link to="/shop">Boutique</router-link>
         </li>
-        <li :class="{ active : page === 'Admin'}">
-          <a @click="emit('navigate', 'Admin')">Admin</a>
+        <li>
+          <router-link to="/admin">Admin</router-link>
         </li>
       </ul>
       <ul class="d-flex flex-row hide-xs">
@@ -27,11 +27,11 @@
         <i @click="state.open = !state.open" class="fa-solid fa-bars show-xs hide-sm" style="color: white"></i>
         <Transition>
           <ul @click="state.open = false" class="menu card" v-if="state.open">
-            <li class="mr-10" :class="{ active : page === 'AppShop'}">
-              <a @click="emit('navigate', 'AppShop')">Boutique</a>
+            <li class="mr-10">
+              <router-link to="/shop">Boutique</router-link>
             </li>
-            <li :class="{ active : page === 'Admin'}">
-              <a @click="emit('navigate', 'Admin')">Admin</a>
+            <li>
+              <router-link to="/admin">Admin</router-link>
             </li>
             <li class="mr-10">
               <a href="">Inscription</a>
@@ -47,17 +47,8 @@
 </template>
 
 <script setup lang="ts">
-  import type {Page} from "@/interfaces";
   import {reactive} from "vue";
   import Calc from "@/components/Calc.vue";
-
-  const props = defineProps<{
-    page : Page
-  }>()
-
-  const emit = defineEmits<{
-    (event: 'navigate', page: Page): void,
-  }>();
 
   const state = reactive<{
     open : boolean,
@@ -84,12 +75,11 @@
       }
     }
   }
-  .active {
-    a {
-      color: white;
-      font-weight: bold;
-    }
+  a.router-link-active {
+    color: white;
+    font-weight: bold;
   }
+
   .actions-container {
     @include xs {
       justify-content: end;

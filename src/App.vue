@@ -1,26 +1,9 @@
 <script setup lang="ts">
 import TheHeader from "@/components/Header.vue";
 import TheFooter from "@/components/Footer.vue";
-import AppShop from "@/features/shop/AppShop.vue";
-import Admin from "@/features/admin/Admin.vue";
-import type {Component as C} from "vue";
-import {reactive} from "vue";
-import type {Page} from "@/interfaces";
+
 import {seed, seed40Articles} from "@/data/seed";
 
-const state = reactive<{
-  page : Page
-}>({
-  page : 'AppShop',
-})
-
-const pages: { [key: string]: C } = {
-  AppShop,
-  Admin,
-};
-const navigate = (page : Page) => {
-  state.page = page;
-}
 
 // seed('products');
 // seed40Articles('products');
@@ -28,11 +11,15 @@ const navigate = (page : Page) => {
 
 <template>
   <div class="app-container">
-    <TheHeader class="header" :page="state.page" @navigate="navigate"/>
+    <TheHeader class="header" />
     <div class="app-content">
-      <Suspense>
-        <Component :is="pages[state.page]" />
-      </Suspense>
+      <router-view v-slot="{ Component }">
+        <template v-if="Component">
+          <Suspense>
+            <Component :is="Component" />
+          </Suspense>
+        </template>
+      </router-view>
     </div>
     <TheFooter class="footer hide-xs"/>
   </div>

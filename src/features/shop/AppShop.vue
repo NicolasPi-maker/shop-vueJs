@@ -37,7 +37,7 @@ watchEffect(async () => {
   state.isLoading = false;
 })
 
-watch(() => state.filters.category && state.filters.priceRange, () => {
+watch(() => state.filters.category || state.filters.priceRange, () => {
   state.page = 1;
   state.products = [];
 })
@@ -99,7 +99,9 @@ const updateFilter = (filterUpdate: FilterUpdate) => {
   } else if(filterUpdate.priceRange) {
     filters.priceRange = filterUpdate.priceRange;
   } else if(filterUpdate.category) {
-    filters.category = filterUpdate.category;
+    if(filters.category !== filterUpdate.category) {
+      filters.category = filterUpdate.category;
+    }
   } else {
     filters.search = DEFAULT_FILTERS.search;
     filters.priceRange = DEFAULT_FILTERS.priceRange;
