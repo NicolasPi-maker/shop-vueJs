@@ -1,21 +1,18 @@
 <script setup lang="ts">
-import {tryRemoveProduct, useFetchProducts} from "@/shared/services/product.service";
+import {useAdminProducts} from "@/features/admin/stores/adminProductStore";
 
- const {products, loading, error} = useFetchProducts();
-
+ const adminProductStore = useAdminProducts();
  const deleteProduct = (productId: string) => {
-   tryRemoveProduct(productId);
-   products.value = products.value!.filter((product) => product._id !== productId);
+   adminProductStore.deleteProduct(productId);
  }
 </script>
 
 <template>
   <div class="container card">
     <h1>Liste des produits</h1>
-    <h3 v-if="error">Une erreur s'est produite</h3>
-    <h3 v-else-if="loading">Chargement des produits...</h3>
+    <h3 v-if="adminProductStore.isLoading">Chargement des produits...</h3>
     <ul v-else>
-      <li class="d-flex flex-row align-items-center mb-20" v-for="product in products" :key="product.id">
+      <li class="d-flex flex-row align-items-center mb-20" v-for="product in adminProductStore.products" :key="product.id">
         <span class="flex-fill">{{ product.title }}</span>
         <router-link :to="{name: 'edit', params: { id: product._id}}" class="edit-button">
           <button class="btn btn-primary mr-20">Modifier</button>

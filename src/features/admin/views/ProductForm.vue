@@ -1,3 +1,102 @@
+<script setup lang="ts">
+import {toTypedSchema} from "@vee-validate/zod";
+import {z} from "zod";
+import {useField, useForm} from "vee-validate";
+import {onMounted, reactive, ref} from "vue";
+import type {FieldContext} from "vee-validate"
+import {useRoute, useRouter} from "vue-router";
+import {addProduct, getProductById, updateProduct} from "@/shared/services/product.service";
+import type {ProductFormInterface} from "@/shared/interfaces";
+import {useAdminProducts} from "@/features/admin/stores/adminProductStore";
+
+const formTitle = ref('Ajouter un article');
+const route = useRoute();
+const router = useRouter();
+const adminProductStore = useAdminProducts();
+
+const state = reactive<{
+  product: null | ProductFormInterface,
+}>({
+  product: null,
+})
+
+if(route.params.id) {
+  state.product = await getProductById(route.params.id);
+  if(state.product) {
+    formTitle.value = 'Modifier un article';
+  }
+}
+
+const initialValues = {
+  title: state.product ? state.product.title : '',
+  image: state.product ? state.product.image: '',
+  price: state.product ? state.product.price : 0,
+  description: state.product ? state.product.description : '',
+  stock: state.product ? state.product.stock : 0,
+  category: state.product ? state.product.category : '',
+}
+const setStyleValidation = (field: FieldContext) => {
+  if (field.meta.valid && field.meta.validated) {
+    return 'success';
+  } else if (!field.meta.valid && field.meta.validated) {
+    return 'error';
+  }
+}
+
+const titleInput = ref<HTMLInputElement | null>(null);
+onMounted(() => {
+  titleInput.value?.focus();
+});
+
+const required = { required_error : 'Veuillez renseigner ce champ'};
+
+const validationSchema = toTypedSchema(
+    z.object({
+      title:
+          z.string(required)
+              .min(1, { message: 'Le titre doit faire au moins 1 caractère'})
+              .max(20, { message: 'Le titre doit faire moins de 10 caractères'}),
+      image: z.string(required).min(1, { message: 'Veuillez renseigner une image'}),
+      price:
+          z.number(required)
+              .min(0, { message: 'Le prix doit être supérieur à 0'})
+              .max(15000, { message: 'Le prix doit être inférieur à 15000'}),
+      description:
+          z.string(required)
+              .min(10, { message: 'La description doit faire au moins 10 caractères'}),
+      stock: z.number(required)
+          .min(1, { message: 'Le stock doit être supérieur à 0'}),
+      category: z.string(required),
+    })
+);
+
+const { handleSubmit, isSubmitting } = useForm({
+  validationSchema,
+  initialValues,
+});
+
+const title = useField('title');
+const image = useField('image');
+const price = useField('price');
+const description = useField('description');
+const stock = useField('stock');
+const category = useField('category');
+
+
+const trySubmit = handleSubmit(async(formValues, { resetForm }) => {
+  try {
+    if(state.product) {
+      await adminProductStore.updateProduct(route.params.id, formValues as ProductFormInterface);
+    } else {
+      await adminProductStore.addProduct(formValues as ProductFormInterface);
+    }
+    await router.push('/admin/productlist');
+  } catch (error) {
+    console.log(error);
+  }
+});
+</script>
+
 <template>
   <div class="card">
     <h3 class="mb-20">{{ formTitle }}</h3>
@@ -43,103 +142,6 @@
   </div>
 </template>
 
-<script setup lang="ts">
-  import {toTypedSchema} from "@vee-validate/zod";
-  import {z} from "zod";
-  import {useField, useForm} from "vee-validate";
-  import {onMounted, reactive, ref} from "vue";
-  import type {FieldContext} from "vee-validate"
-  import {useRoute, useRouter} from "vue-router";
-  import {addProduct, getProductById, updateProduct} from "@/shared/services/product.service";
-  import type {ProductFormInterface} from "@/interfaces";
-
-  const formTitle = ref('Ajouter un article');
-  const route = useRoute();
-  const router = useRouter();
-
-  const state = reactive<{
-    product: null | ProductFormInterface,
-  }>({
-    product: null,
-  })
-
-  if(route.params.id) {
-    state.product = await getProductById(route.params.id);
-    if(state.product) {
-      formTitle.value = 'Modifier un article';
-    }
-  }
-
-  const initialValues = {
-    title: state.product ? state.product.title : '',
-    image: state.product ? state.product.image: '',
-    price: state.product ? state.product.price : 0,
-    description: state.product ? state.product.description : '',
-    stock: state.product ? state.product.stock : 0,
-    category: state.product ? state.product.category : '',
-  }
-  const setStyleValidation = (field: FieldContext) => {
-    if (field.meta.valid && field.meta.validated) {
-      return 'success';
-    } else if (!field.meta.valid && field.meta.validated) {
-      return 'error';
-    }
-  }
-
-  const titleInput = ref<HTMLInputElement | null>(null);
-  onMounted(() => {
-    titleInput.value?.focus();
-  });
-
-  const required = { required_error : 'Veuillez renseigner ce champ'};
-
-  const validationSchema = toTypedSchema(
-      z.object({
-        title:
-            z.string(required)
-            .min(1, { message: 'Le titre doit faire au moins 1 caractère'})
-            .max(20, { message: 'Le titre doit faire moins de 10 caractères'}),
-        image: z.string(required).min(1, { message: 'Veuillez renseigner une image'}),
-        price:
-            z.number(required)
-            .min(0, { message: 'Le prix doit être supérieur à 0'})
-            .max(15000, { message: 'Le prix doit être inférieur à 15000'}),
-        description:
-            z.string(required)
-            .min(10, { message: 'La description doit faire au moins 10 caractères'}),
-        stock: z.number(required)
-            .min(1, { message: 'Le stock doit être supérieur à 0'}),
-        category: z.string(required),
-      })
-  );
-
-  const { handleSubmit, isSubmitting } = useForm({
-    validationSchema,
-    initialValues,
-  });
-
-  const title = useField('title');
-  const image = useField('image');
-  const price = useField('price');
-  const description = useField('description');
-  const stock = useField('stock');
-  const category = useField('category');
-
-
-  const trySubmit = handleSubmit(async(formValues, { resetForm }) => {
-    try {
-      if(state.product) {
-        await updateProduct(route.params.id, formValues as ProductFormInterface);
-
-      } else {
-        await addProduct(formValues as ProductFormInterface);
-      }
-      await router.push('/admin/productlist');
-    } catch (error) {
-      console.log(error);
-    }
-  });
-</script>
 
 <style scoped>
 @import "../../../assets/base.css";

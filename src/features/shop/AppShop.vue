@@ -6,7 +6,6 @@ import {useProducts} from "@/features/shop/store/productStore";
 import {useCart} from "@/features/shop/store/cartStore";
 
 const productStore = useProducts();
-productStore.fetchProducts();
 const cartStore = useCart();
 
 const updateFilter = (filterUpdate: FilterUpdate) => {
@@ -25,10 +24,11 @@ const removeProductFromCart = (productId: string) => {
 const incPage = () => productStore.incPage();
 
 productStore.$onAction(({ name, after, args }) => {
-  if(name === 'updateFilter' && !args[0].search) {
+  if(name === 'updateFilter' && args[0].search === undefined) {
     after(() => {
       productStore.page = 1;
       productStore.products = [];
+      productStore.moreResults = true;
       productStore.fetchProducts();
     })
   } else if (name === 'incPage') {

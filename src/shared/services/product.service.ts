@@ -20,28 +20,9 @@ export async function fetchProduct(filter: FiltersInterface, page : number): Pro
     return await (await fetch(`${BASE_URL}?${query}`)).json();
 }
 
-export const useFetchProducts = (): { loading: Ref<UnwrapRef<boolean>>; error: Ref<UnwrapRef<any>>; products: Ref<UnwrapRef<ProductInterface[] | null>> } => {
-    const products = ref<ProductInterface[] | null>(null);
-    const loading = ref<boolean>(false);
-    const error = ref<any>(null);
-
-    (async() => {
-        try {
-            loading.value = true;
-            products.value = await( await fetch(BASE_URL)).json()
-        } catch(err) {
-            error.value = err;
-        } finally {
-            loading.value = false;
-        }
-    })();
-
-    return {
-        products,
-        loading,
-        error,
-    };
-};
+export async function fetchProductAdmin(): Promise<ProductInterface[]> {
+    return await (await fetch(BASE_URL)).json();
+}
 
 export const tryRemoveProduct = (id: string): string => {
     (async() => {

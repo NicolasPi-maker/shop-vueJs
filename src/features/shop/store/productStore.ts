@@ -10,6 +10,8 @@ interface ProductState {
     page: number,
     isLoading: boolean,
     moreResults: boolean,
+    loaded: boolean,
+    needRefresh: boolean,
 }
 
 export const useProducts = defineStore('products', {
@@ -20,6 +22,8 @@ export const useProducts = defineStore('products', {
             page: 1,
             isLoading: true,
             moreResults: true,
+            loaded: false,
+            needRefresh: false,
         }
     ),
     getters: {
@@ -71,6 +75,18 @@ export const useProducts = defineStore('products', {
     }
 })
 
+export function initialFetchProducts() {
+    const productStore = useProducts();
+    if(!productStore.loaded || productStore.needRefresh) {
+        productStore.fetchProducts();
+        productStore.loaded = true;
+        if(productStore.needRefresh) {
+            productStore.products = [];
+            productStore.page = 1;
+            productStore.needRefresh = false;
+        }
+    }
+}
 
 
 

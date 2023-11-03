@@ -1,4 +1,4 @@
-import {defineStore} from "pinia";
+import {defineStore} from 'pinia';
 import type {ProductCartInterface} from "@/shared/interfaces";
 import {useProducts} from "@/features/shop/store/productStore";
 

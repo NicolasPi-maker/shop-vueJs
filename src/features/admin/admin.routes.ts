@@ -1,4 +1,6 @@
 import type {RouteRecordRaw} from "vue-router";
+import { initialAdminFetchProducts } from "@/features/admin/stores/adminProductStore";
+
 
 
 export const ADMIN_ROUTES: RouteRecordRaw[] = [

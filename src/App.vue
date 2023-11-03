@@ -2,7 +2,7 @@
 import TheHeader from "@/components/Header.vue";
 import TheFooter from "@/components/Footer.vue";
 
-import {seed, seed40Articles} from "@/data/seed";
+import {seed, seed40Articles} from "@/shared/data/seed";
 
 
 // seed('products');
