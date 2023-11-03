@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type {Category, FiltersInterface, FilterUpdate, ProductInterface} from "@/interfaces";
+import type {Category, FiltersInterface, FilterUpdate, ProductInterface} from "@/shared/interfaces";
 import {computed} from "vue";
 
   const props = defineProps<{

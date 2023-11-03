@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type {ProductCartInterface} from "@/interfaces";
+import type {ProductCartInterface} from "@/shared/interfaces";
 
 const removeProductFromCart = (productId : string) => {
   emit('removeProduct', productId);

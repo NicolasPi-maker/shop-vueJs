@@ -35,6 +35,13 @@ img {
 a {
   color: var(--text-color);
   text-decoration: none;
+  padding: 8px 15px;
+  transition: 0.3s;
+  border-radius: var(--border-radius);
+}
+a:hover {
+  background-color: var(--primary-1);
+  color: var(--text-primary-color);
 }
 
 body {
@@ -193,6 +200,12 @@ textarea {
   border-radius: var(--border-radius);
   background-color: white;
   padding: 30px;
+}
+
+a.router-link-active {
+  color: white;
+  background-color: var(--primary-1);
+  font-weight: bold;
 }
 
 @media (max-width: 575px) {

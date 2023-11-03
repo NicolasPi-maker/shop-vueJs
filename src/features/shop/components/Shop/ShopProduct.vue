@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ProductInterface} from "@/interfaces/product.interface";
+import type { ProductInterface } from "@/shared/interfaces";
 
 const addProductToCart = (productId : string) => {
   emit('addToCart', productId);

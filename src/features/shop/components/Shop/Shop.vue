@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import ShopProductList from "@/features/shop/components/Shop/ShopProductList.vue";
-import type {ProductInterface} from "@/interfaces/product.interface";
 import ShopFilter from "@/features/shop/components/Shop/ShopFilter.vue";
-import type {FiltersInterface, FilterUpdate} from "@/interfaces";
+import type {FiltersInterface, FilterUpdate, ProductInterface} from "@/shared/interfaces";
 import {reactive} from "vue";
 import Calc from "@/components/Calc.vue";
 
@@ -10,6 +9,7 @@ const props = defineProps<{
   products: ProductInterface[],
   filters: FiltersInterface,
   isMoreResults: boolean,
+  page : number,
 }>();
 
 const emit = defineEmits<{
@@ -51,6 +51,7 @@ const state = reactive<{
           :products="products"
           @add-to-cart="emit('addToCart', $event)"
           @inc-page="emit('incPage')"
+          :page = "page"
       />
     </div>
   </div>
